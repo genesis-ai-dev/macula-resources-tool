@@ -1,5 +1,9 @@
 import { useQuery, gql } from '@apollo/client';
-
+import {
+  VSCodePanels,
+  VSCodePanelView,
+  VSCodePanelTab,
+} from '@vscode/webview-ui-toolkit/react';
 import './App.css'
 
 // FIXME: Images don't load; may need to rethink this for webview land
@@ -46,10 +50,18 @@ function App() {
 
   return (
     <>
-      <h1>Macula Resources Tool</h1>
-      <div className="card">
-        <DisplayMaculaToken />
-      </div>
+      <VSCodePanels>
+        <VSCodePanelView
+          id="Words"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem',
+          }}
+        >
+          <DisplayMaculaToken />
+        </VSCodePanelView>
+      </VSCodePanels>
     </>
   )
 }
