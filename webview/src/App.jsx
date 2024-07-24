@@ -1,19 +1,23 @@
 import { useQuery, gql } from '@apollo/client';
+import {useState } from 'react';
 import {
   VSCodePanels,
   VSCodePanelView,
-  VSCodePanelTab,
 } from '@vscode/webview-ui-toolkit/react';
+import PropTypes from 'prop-types';
+import VerseRefNavigation from "./VerseRefNavigation";
+
 import './App.css'
 
 // FIXME: Images don't load; may need to rethink this for webview land
 // vscode-webview://0dc0cgt0003ehsbssoome7pav0khvr7ouquancbks98h5m91ihd4/assets/react.svg
 
+// TODO: Restore textualEdition to filter
 const MACULA_TOKEN = gql`
-{
+query GetTokens($verseRef: String!) {
   wordTokens(
   filters: {
-    scriptureReference: {usfmRef: "JHN 14:1", textualEdition:"SBLGNT"}
+    scriptureReference: {usfmRef: $verseRef}
   },
   ) {
     id
@@ -23,8 +27,10 @@ const MACULA_TOKEN = gql`
 }
 `;
 
-function DisplayMaculaToken() {
-  const { loading, error, data } = useQuery(MACULA_TOKEN);
+function DisplayMaculaToken({ verseRef}) {
+  const { loading, error, data } = useQuery(MACULA_TOKEN, {
+    variables: { verseRef }
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
@@ -45,8 +51,12 @@ function DisplayMaculaToken() {
   ));
 }
 
-function App() {
+DisplayMaculaToken.propTypes = {
+  verseRef: PropTypes.object.isRequired,
+};
 
+function App() {
+  const [verseRef, setVerseRef] = useState("JHN 14:1");
   return (
     <>
       <VSCodePanels>
@@ -58,7 +68,8 @@ function App() {
             gap: '0.5rem',
           }}
         >
-          <DisplayMaculaToken />
+          <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
+          <DisplayMaculaToken verseRef={verseRef} />
         </VSCodePanelView>
       </VSCodePanels>
     </>
