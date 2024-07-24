@@ -3,6 +3,9 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+// FIXME: Images don't load; may need to rethink this for webview land
+// vscode-webview://0dc0cgt0003ehsbssoome7pav0khvr7ouquancbks98h5m91ihd4/assets/react.svg
+
 function App() {
   const [count, setCount] = useState(0)
 

@@ -17,10 +17,36 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "macula-resources-tool.helloWorld",
-      "title": "Hello World"
-    }]
+    "menus": {
+      "activitybar/context": [
+        {
+          "command": "macula-resources-tool.showPanel",
+          "group": "1_formation",
+          "when": "viewLocation == activitybar && view == macula-resources-tool"
+        }
+      ]
+    },
+    "views": {
+      "macula-resources-tool": [
+        {
+          "type": "webview",
+          "title": "Macula Resources Tool",
+          "id": "macula-side-panel",
+          "name": "Macula Resources Tool",
+          "icon": "media/macula-logo.svg",
+          "contextualTitle": "Macula Resources Tool"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "macula-resources-tool",
+          "title": "Macula Resources Tool",
+          "icon": "media/macula-logo.svg"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",
