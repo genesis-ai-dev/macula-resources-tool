@@ -15,7 +15,6 @@ const MACULA_TOKEN = gql`
   filters: {
     scriptureReference: {usfmRef: "JHN 14:1", textualEdition:"SBLGNT"}
   },
-  pagination: {limit: 1, offset: 0}
   ) {
     id
     value
