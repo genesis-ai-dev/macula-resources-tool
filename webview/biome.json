@@ -85,9 +85,7 @@
         "useValidTypeof": "error"
       }
     },
-    "ignore": [
-      "**/dist"
-    ]
+    "ignore": ["**/dist"]
   },
   "javascript": {
     "formatter": {
@@ -109,9 +107,7 @@
   },
   "overrides": [
     {
-      "include": [
-        "*.json"
-      ],
+      "include": ["*.json"],
       "formatter": {
         "indentWidth": 2
       }

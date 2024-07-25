@@ -1,33 +1,48 @@
-const vscode = require("vscode");
+const vscode = require('vscode')
 
 class MaculaSidePanel {
   constructor(extensionUri) {
-    this._view = undefined;
-    this.extensionUri = extensionUri;
-    this.viewType = "maculaSidePanel";
+    this._view = undefined
+    this.extensionUri = extensionUri
+    this.viewType = 'maculaSidePanel'
   }
 
-  async resolveWebviewView(webviewView, context, token) {
-    this._view = webviewView;
+  async resolveWebviewView(webviewView, _context, _token) {
+    this._view = webviewView
 
     webviewView.webview.options = {
       enableScripts: true,
       localResourceRoots: [
         this.extensionUri,
         // FIXME: This is only being done to load assets, which doesn't work yet.
-        vscode.Uri.joinPath(this.extensionUri, "webview", "dist", "assets")
+        vscode.Uri.joinPath(this.extensionUri, 'webview', 'dist', 'assets'),
       ],
-    };
+    }
 
-    webviewView.webview.html = this.getWebviewContent(webviewView.webview);
-
+    webviewView.webview.html = this.getWebviewContent(webviewView.webview)
   }
 
   getWebviewContent(webview) {
-    const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, "webview", "dist", "assets", "index.js"))
-    const stylesUri = webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, "webview", "dist", "assets", "index.css"))
+    const scriptUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.extensionUri,
+        'webview',
+        'dist',
+        'assets',
+        'index.js',
+      ),
+    )
+    const stylesUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this.extensionUri,
+        'webview',
+        'dist',
+        'assets',
+        'index.css',
+      ),
+    )
 
-    const nonce = getNonce();
+    const nonce = getNonce()
 
     return `<!DOCTYPE html>
     <html lang="en">
@@ -56,18 +71,19 @@ class MaculaSidePanel {
           <div id="root"></div>
           <script nonce="${nonce}" type="module" src="${scriptUri}"></script>
       </body>
-      </html>`;
+      </html>`
   }
 }
 
 // From https://github.com/microsoft/vscode-extension-samples/blob/5651637c527e07173bd066f5fb7e171ef4616cab/webview-sample/src/extension.ts#L215
 function getNonce() {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let text = ''
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
   }
-  return text;
+  return text
 }
 
-module.exports = { MaculaSidePanel };
+module.exports = { MaculaSidePanel }
