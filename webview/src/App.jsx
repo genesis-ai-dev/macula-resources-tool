@@ -17,22 +17,31 @@ import VerseRefNavigation from './components/VerseRefNavigation'
 
 function App() {
   const [verseRef, setVerseRef] = useState('JHN 14:1')
+  const [activeTab, setActiveTab] = useState('words')
+
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId)
+  }
+
   return (
     <>
-      <VSCodePanels activeId="syntaxTrees">
-        <VSCodePanelTab title="Words" id="words">
+      <VSCodePanels activeId={activeTab}>
+        <VSCodePanelTab id="words" onClick={() => handleTabClick('words')}>
           Words
         </VSCodePanelTab>
-        <VSCodePanelTab title="Syntax Trees" id="syntaxTrees">
+        <VSCodePanelTab
+          id="syntaxTrees"
+          onClick={() => handleTabClick('syntaxTrees')}
+        >
           Syntax Trees
         </VSCodePanelTab>
         <VSCodePanelView id="words" className="macula-panel-view">
           <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
-          <WordTokens verseRef={verseRef} />
+          {activeTab === 'words' && <WordTokens verseRef={verseRef} />}
         </VSCodePanelView>
         <VSCodePanelView id="syntaxTrees" className="macula-panel-view">
           <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
-          <SyntaxTrees verseRef={verseRef} />
+          {activeTab === 'syntaxTrees' && <SyntaxTrees verseRef={verseRef} />}
         </VSCodePanelView>
       </VSCodePanels>
     </>
