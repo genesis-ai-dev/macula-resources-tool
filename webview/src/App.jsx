@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import {
-  VSCodePanelView,
   VSCodePanelTab,
+  VSCodePanelView,
   VSCodePanels,
 } from '@vscode/webview-ui-toolkit/react'
 import PropTypes from 'prop-types'
@@ -14,7 +14,7 @@ import './App.css'
 // vscode-webview://0dc0cgt0003ehsbssoome7pav0khvr7ouquancbks98h5m91ihd4/assets/react.svg
 
 // TODO: Restore textualEdition to filter
-const MACULA_TOKEN = gql`
+const MACULA_TOKENS = gql`
 query GetTokens($verseRef: String!) {
   wordTokens(
   filters: {
@@ -28,8 +28,8 @@ query GetTokens($verseRef: String!) {
 }
 `
 
-function DisplayMaculaToken({ verseRef }) {
-  const { loading, error, data } = useQuery(MACULA_TOKEN, {
+function DisplayMaculaTokens({ verseRef }) {
+  const { loading, error, data } = useQuery(MACULA_TOKENS, {
     variables: { verseRef },
   })
 
@@ -56,7 +56,29 @@ function DisplayMaculaToken({ verseRef }) {
   ))
 }
 
-DisplayMaculaToken.propTypes = {
+DisplayMaculaTokens.propTypes = {
+  verseRef: PropTypes.object.isRequired,
+}
+
+const MACULA_SYNTAX_TREES = gql`
+query GetTrees($verseRef: String!) {
+  syntaxTrees(filters: {scriptureReference: {usfmRef: $verseRef}}) {
+    xmlId
+  }
+}
+`
+function DisplaySyntaxTrees({ verseRef }) {
+  const { loading, error, data } = useQuery(MACULA_SYNTAX_TREES, {
+    variables: { verseRef },
+  })
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error : {error.message}</p>
+
+  return data.syntaxTrees.map(({ xmlId }) => <p key={xmlId}>{xmlId}</p>)
+}
+
+DisplaySyntaxTrees.propTypes = {
   verseRef: PropTypes.object.isRequired,
 }
 
@@ -73,10 +95,11 @@ function App() {
         </VSCodePanelTab>
         <VSCodePanelView id="words" className="macula-panel-view">
           <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
-          <DisplayMaculaToken verseRef={verseRef} />
+          <DisplayMaculaTokens verseRef={verseRef} />
         </VSCodePanelView>
         <VSCodePanelView id="syntaxTrees" className="macula-panel-view">
-          <em>TBD</em>
+          <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
+          <DisplaySyntaxTrees verseRef={verseRef} />
         </VSCodePanelView>
       </VSCodePanels>
     </>
