@@ -1,5 +1,9 @@
 import { gql, useQuery } from '@apollo/client'
-import { VSCodePanelView, VSCodePanels } from '@vscode/webview-ui-toolkit/react'
+import {
+  VSCodePanelView,
+  VSCodePanelTab,
+  VSCodePanels,
+} from '@vscode/webview-ui-toolkit/react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import VerseRefNavigation from './VerseRefNavigation'
@@ -60,17 +64,19 @@ function App() {
   const [verseRef, setVerseRef] = useState('JHN 14:1')
   return (
     <>
-      <VSCodePanels>
-        <VSCodePanelView
-          id="Words"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem',
-          }}
-        >
+      <VSCodePanels activeId="syntaxTrees">
+        <VSCodePanelTab title="Words" id="words">
+          Words
+        </VSCodePanelTab>
+        <VSCodePanelTab title="Syntax Trees" id="syntaxTrees">
+          Syntax Trees
+        </VSCodePanelTab>
+        <VSCodePanelView id="words" className="macula-panel-view">
           <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
           <DisplayMaculaToken verseRef={verseRef} />
+        </VSCodePanelView>
+        <VSCodePanelView id="syntaxTrees" className="macula-panel-view">
+          <em>TBD</em>
         </VSCodePanelView>
       </VSCodePanels>
     </>
