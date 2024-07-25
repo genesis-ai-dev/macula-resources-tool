@@ -9,12 +9,16 @@
     "lineWidth": 80,
     "attributePosition": "auto"
   },
-  "organizeImports": { "enabled": true },
+  "organizeImports": {
+    "enabled": true
+  },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": false,
-      "a11y": { "noBlankTarget": "off" },
+      "a11y": {
+        "noBlankTarget": "off"
+      },
       "complexity": {
         "noExtraBooleanCast": "error",
         "noMultipleSpacesInRegularExpressionLiterals": "error",
@@ -50,7 +54,9 @@
         "useValidForDirection": "error",
         "useYield": "error"
       },
-      "security": { "noDangerouslySetInnerHtmlWithChildren": "error" },
+      "security": {
+        "noDangerouslySetInnerHtmlWithChildren": "error"
+      },
       "suspicious": {
         "noAssignInExpressions": "error",
         "noAsyncPromiseExecutor": "error",
@@ -79,7 +85,9 @@
         "useValidTypeof": "error"
       }
     },
-    "ignore": ["**/dist", "**/.eslintrc.cjs"]
+    "ignore": [
+      "**/dist"
+    ]
   },
   "javascript": {
     "formatter": {
@@ -99,5 +107,14 @@
     "clientKind": "git",
     "useIgnoreFile": true
   },
-  "overrides": [{ "include": ["*.json"], "formatter": { "indentWidth": 2 } }]
+  "overrides": [
+    {
+      "include": [
+        "*.json"
+      ],
+      "formatter": {
+        "indentWidth": 2
+      }
+    }
+  ]
 }
