@@ -16,7 +16,7 @@ function activate(context) {
     vscode.window.registerWebviewViewProvider(
       "macula-side-panel",
       new MaculaSidePanel(context.extensionUri),
-      {webviewOptions: {retainContextWhenHidden: true}}
+      {webviewOptions: {retainContextWhenHidden: true, enableScripts: true}}
     )
   );
 }
