@@ -1,76 +1,47 @@
 import { gql, useQuery } from '@apollo/client'
-import { VSCodePanelView, VSCodePanels } from '@vscode/webview-ui-toolkit/react'
+import {
+  VSCodePanelTab,
+  VSCodePanelView,
+  VSCodePanels,
+} from '@vscode/webview-ui-toolkit/react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import VerseRefNavigation from './VerseRefNavigation'
 
 import './App.css'
+import WordTokens from './components/WordTokens'
+import SyntaxTrees from './components/SyntaxTrees'
+import VerseRefNavigation from './components/VerseRefNavigation'
 
 // FIXME: Images don't load; may need to rethink this for webview land
 // vscode-webview://0dc0cgt0003ehsbssoome7pav0khvr7ouquancbks98h5m91ihd4/assets/react.svg
 
-// TODO: Restore textualEdition to filter
-const MACULA_TOKEN = gql`
-query GetTokens($verseRef: String!) {
-  wordTokens(
-  filters: {
-    scriptureReference: {usfmRef: $verseRef}
-  },
-  ) {
-    id
-    value
-    data
-  }
-}
-`
-
-function DisplayMaculaToken({ verseRef }) {
-  const { loading, error, data } = useQuery(MACULA_TOKEN, {
-    variables: { verseRef },
-  })
-
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error : {error.message}</p>
-
-  return data.wordTokens.map(({ id, value, data }) => (
-    <div key={id}>
-      <h3>{value}</h3>
-      <ul style={{ textAlign: 'initial' }}>
-        {Object.entries(data).map(
-          ([key, value]) =>
-            value && (
-              <li key={key}>
-                {key}:{' '}
-                <code style={{ color: 'black', backgroundColor: '#b6b6b6' }}>
-                  {value || ' '}
-                </code>
-              </li>
-            ),
-        )}
-      </ul>
-    </div>
-  ))
-}
-
-DisplayMaculaToken.propTypes = {
-  verseRef: PropTypes.object.isRequired,
-}
-
 function App() {
   const [verseRef, setVerseRef] = useState('JHN 14:1')
+  const [activeTab, setActiveTab] = useState('words')
+
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId)
+  }
+
   return (
     <>
-      <VSCodePanels>
-        <VSCodePanelView
-          id="Words"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem',
-          }}
+      <VSCodePanels activeId={activeTab}>
+        <VSCodePanelTab id="words" onClick={() => handleTabClick('words')}>
+          Words
+        </VSCodePanelTab>
+        <VSCodePanelTab
+          id="syntaxTrees"
+          onClick={() => handleTabClick('syntaxTrees')}
         >
+          Syntax Trees
+        </VSCodePanelTab>
+        <VSCodePanelView id="words" className="macula-panel-view">
           <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
-          <DisplayMaculaToken verseRef={verseRef} />
+          {activeTab === 'words' && <WordTokens verseRef={verseRef} />}
+        </VSCodePanelView>
+        <VSCodePanelView id="syntaxTrees" className="macula-panel-view">
+          <VerseRefNavigation verseRef={verseRef} callback={setVerseRef} />
+          {activeTab === 'syntaxTrees' && <SyntaxTrees verseRef={verseRef} />}
         </VSCodePanelView>
       </VSCodePanels>
     </>

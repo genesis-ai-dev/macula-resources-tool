@@ -1,1 +1,9 @@
-/* TODO: Investigate / backport styles from aquifer-search-tool */
+.macula-panel-view {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem
+}
+
+.macula-panel-view[hidden] {
+    display: none;
+}

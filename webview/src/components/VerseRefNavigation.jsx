@@ -94,8 +94,9 @@ const VerseRefNavigation = ({ verseRef = 'GEN 1:1', callback }) => {
 }
 
 VerseRefNavigation.propTypes = {
-  verseRef: PropTypes.object.isRequired,
-  callback: PropTypes.object.isRequired,
+  // FIXME: verseRef upstream is an object
+  verseRef: PropTypes.string.isRequired,
+  callback: PropTypes.func.isRequired,
 }
 
 export default VerseRefNavigation
